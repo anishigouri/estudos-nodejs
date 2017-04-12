@@ -8,8 +8,6 @@ module.exports = function(app) {
 
         var filename = req.headers.filename;
 
-        console.log('filename', filename);
-
         req.pipe(fs.createWriteStream('util/' + filename))
         .on('finish', function() {
             console.log('escrito com sucesso');

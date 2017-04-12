@@ -1,9 +1,40 @@
-
 module.exports = function(app) {
 
     app.get('/pagamentos', function(req, res) {
         console.log('Recebida requisição de testesss.');
         res.send('OK');
+    });
+
+    app.get('/pagamentos/pagamento/:id', function(req, res) {
+        var id = req.params.id;
+
+        var memcachedClient = app.servicos.memcachedClient();
+
+        memcachedClient.get('pagamento-' + id, function(erro, retorno) {
+
+            if(erro || !retorno) {
+                console.log('MISS - Chave não encontrada');
+                var connection = app.persistencia.connectionFactory();
+                var pagamentoDAO = new app.persistencia.PagamentoDAO(connection);
+
+                pagamentoDAO.buscaPorId(id, function(err, result) {
+                    if(err) {
+                        res.status(500).send(err);
+                        return;
+                    }
+
+                    res.send(result);
+                });
+            } else {
+                console.log('HIT - valor: ' + JSON.stringify(retorno));
+                res.json(retorno);
+                return;
+            }
+
+
+
+        });
+
     });
 
     app.delete('/pagamentos/pagamento/:id', function(req, res) {
@@ -97,6 +128,12 @@ module.exports = function(app) {
 
                 } else {
                     res.location('/pagamentos/pagamento' + pagamento.id); // da implementação do Mysql
+
+                    var cache = new app.servicos.memcachedClient();
+
+                    cache.set('pagamento-' + id, result, 100000, function(err) {
+                        console.log('nova chave: pagamento-' + id);
+                    });
 
                     //HATEOAS - Hypermedia as the engine of application state
 

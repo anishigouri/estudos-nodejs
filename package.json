@@ -1,5 +1,5 @@
 {
-  "name": "ekontroll-backend",
+  "name": "fdp-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "keywords": [
     "api",
-    "e-kontroll"
+    "fdp"
   ],
   "author": "Allan Furlani Nishigouri",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "consign": "^0.1.2",
     "express": "^4.14.0",
     "express-validator": "^3.1.1",
+    "memcached": "^2.2.2",
     "mysql": "^2.12.0",
     "restify": "^4.3.0",
     "soap": "^0.18.0"
