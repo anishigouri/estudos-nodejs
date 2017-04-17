@@ -23,6 +23,8 @@ module.exports = function(app) {
                         return;
                     }
 
+                    console.log("teste do github");
+
                     res.send(result);
                 });
             } else {
