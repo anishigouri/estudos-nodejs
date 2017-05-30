@@ -12,5 +12,5 @@ function createMemcachedClient() {
 }
 
 module.exports = function() {
-    return createMemcachedClient();
+    return createMemcachedClient;
 }
