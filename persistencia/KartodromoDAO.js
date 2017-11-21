@@ -15,7 +15,7 @@ KartodromoDAO.prototype.update = function(kartodromo, callback) {
 }
 
 KartodromoDAO.prototype.getById = function(id, callback) {
-    this._connection.query('SELECT * FROM kartodromo WHERE id = ? ', [id], callback);
+    this._connection.query('SELECT * FROM kartodromo k INNER JOIN contato c ON k.contato_id = c.id INNER JOIN endereco e on e.id = k.endereco_id WHERE k.id = ? ', [id], callback);
 }
 
 module.exports = function() {
