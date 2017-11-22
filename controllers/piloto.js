@@ -1,10 +1,10 @@
 module.exports = function(app) {
   
-      app.get('/patrocinadores', function(req, res) {
+      app.get('/pilotos', function(req, res) {
         var connection = app.persistencia.connectionFactory();
-        var patrocinadorDAO = new app.persistencia.PatrocinadorDAO(connection);
+        var pilotoDAO = new app.persistencia.PilotoDAO(connection);
   
-        patrocinadorDAO.list(function(err, result) {
+        pilotoDAO.list(function(err, result) {
             if(err) {
                 console.log(err);
                 res.status(500).send(err);
@@ -15,12 +15,12 @@ module.exports = function(app) {
         });
       });
   
-    app.get('/patrocinadores/:id', function(req, res) {
+    app.get('/pilotos/:id', function(req, res) {
       var id = req.params.id;
       var connection = app.persistencia.connectionFactory();
-      var patrocinadorDAO = new app.persistencia.PatrocinadorDAO(connection);
+      var pilotoDAO = new app.persistencia.PilotoDAO(connection);
   
-      patrocinadorDAO.getById(id, function(err, result) {
+      pilotoDAO.getById(id, function(err, result) {
         if(err) {
           res.status(500).send(err);
           return;
@@ -29,16 +29,16 @@ module.exports = function(app) {
       });
     });
   
-    app.post('/patrocinadores', function(req, res) {
+    app.post('/pilotos', function(req, res) {
   
         var connection = app.persistencia.connectionFactory();
-        var patrocinadorDAO = new app.persistencia.PatrocinadorDAO(connection);
+        var pilotoDAO = new app.persistencia.PilotoDAO(connection);
         var contatoDAO = new app.persistencia.ContatoDAO(connection);
   
-        var patrocinador = req.body['patrocinador'];
-        var contato = req.body.patrocinador['contato'];
+        var piloto = req.body['piloto'];
+        var contato = req.body.piloto['contato'];
   
-        console.log('patrocinador', patrocinador);
+        console.log('piloto', piloto);
         console.log('contato', contato);
   
         contatoDAO.save(contato, function(err, resultContato) {
@@ -47,9 +47,9 @@ module.exports = function(app) {
               res.status(500).send(err);
           } else {
               console.log('id do contato', resultContato.insertId);
-              patrocinador.contato_id = resultContato.insertId;
-              delete patrocinador.contato;
-              patrocinadorDAO.save(patrocinador, function(err, result) {
+              piloto.contato_id = resultContato.insertId;
+              delete piloto.contato;
+              pilotoDAO.save(piloto, function(err, result) {
                 if(err) {
                     console.log('Erro ao inserir no banco de dados', err);
                     res.status(500).send(err);
@@ -62,19 +62,19 @@ module.exports = function(app) {
         });
     });
   
-    app.put('/patrocinadores', function(req, res) {
+    app.put('/pilotos', function(req, res) {
       
-      var patrocinador = req.body['patrocinador'];
+      var piloto = req.body['piloto'];
   
       var connection = app.persistencia.connectionFactory();
-      var patrocinadorDAO = new app.persistencia.PatrocinadorDAO(connection);
+      var pilotoDAO = new app.persistencia.PilotoDAO(connection);
   
-      patrocinadorDAO.update(patrocinador, function(erro) {
+      pilotoDAO.update(piloto, function(erro) {
         if(erro) {
           res.status(500).send(erro);
           return;
         }
-        res.send(patrocinador);
+        res.send(piloto);
       });
   
     });
