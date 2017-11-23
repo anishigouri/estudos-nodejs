@@ -21,15 +21,32 @@ module.exports = async function(app) {
         var id = req.params.id;
         var connection = app.persistencia.connectionFactory();
         var kartodromoDAO = new app.persistencia.KartodromoDAO(connection);
-    
+
         kartodromoDAO.getById(id, function(err, result) {
-          if(err) {
+            if(err) {
             res.status(500).send(err);
             return;
-          }
-          res.send(result);
+            }
+            res.send(result);
         });
-      });
+    });
+
+    app.delete('/kartodromos/:id', function(req, res) {
+        var id = req.params.id;
+        var connection = app.persistencia.connectionFactory();
+        var kartodromoDAO = new app.persistencia.KartodromoDAO(connection);
+
+        console.log('id', id);
+
+        kartodromoDAO.delete(id, function(err, result) {
+            if(err) {
+                console.log('Erro ao remover: ', err);
+                res.status(500).send(err);
+                return;
+            }
+            res.send(result);
+        });
+    });
 
     app.post('/kartodromos', function(req, res) {
 
