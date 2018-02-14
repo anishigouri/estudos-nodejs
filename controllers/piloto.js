@@ -25,7 +25,7 @@ module.exports = function(app) {
           res.status(500).send(err);
           return;
         }
-        res.send(result);
+        res.send(result[0]);
       });
     });
   
@@ -35,11 +35,10 @@ module.exports = function(app) {
         var pilotoDAO = new app.persistencia.PilotoDAO(connection);
         var contatoDAO = new app.persistencia.ContatoDAO(connection);
   
-        var piloto = req.body['piloto'];
-        var contato = req.body.piloto['contato'];
+        var piloto = req.body;
+
+        var contato = piloto.contato;
   
-        console.log('piloto', piloto);
-        console.log('contato', contato);
   
         contatoDAO.save(contato, function(err, resultContato) {
           if(err) {
